@@ -3,8 +3,13 @@ using System.Collections;
 
 public class DraggableObject : MonoBehaviour {
 
+
+    bool isDragged;
+
 	// Use this for initialization
 	void Start () {
+
+        isDragged = false;
 	
 	}
 	
@@ -13,10 +18,13 @@ public class DraggableObject : MonoBehaviour {
 	
 	}
 
-    void OnCollisionEnter(Collision col)
-    {
-        print("collide");
-
-
+    public void SetDragged(bool state) {
+        isDragged = state;
     }
+    public bool GetDragged() {
+        return isDragged;
+    }
+    
+    
+
 }

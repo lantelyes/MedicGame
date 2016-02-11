@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour {
 
     //Draging stuff
     bool isDragging;
+    bool canDrag;
+
+    GameObject currentDragObject;
     
 
     // Use this for initialization
@@ -38,8 +41,9 @@ public class PlayerController : MonoBehaviour {
 
         canSprint = true;
         isSprinting = false;
-        isDragging = false;
 
+        canDrag = true;
+        isDragging = false;
 
 
 
@@ -105,15 +109,22 @@ public class PlayerController : MonoBehaviour {
     void HandleDragging(GameObject dragObject)
     {
         if(Input.GetKeyDown(KeyCode.E)) {
-            isDragging = !isDragging;
+            if(!isDragging) {
+                currentDragObject = dragObject;
+                isDragging = true;
+            } else {
+                currentDragObject = null;
+                isDragging = false;
+            }
         }
 
 
-        if(isDragging)  {
-            dragObject.transform.position = transform.position;
+        if(currentDragObject) {
+            currentDragObject.transform.position = transform.position;
         }
 
     }
+
 
     void OnTriggerStay(Collider col) {
         if (col.gameObject.tag == "dragable") { 
