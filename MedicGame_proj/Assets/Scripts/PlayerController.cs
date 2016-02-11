@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour {
 
     bool canSprint;
     bool isSprinting;
+
+    //Draging stuff
+    bool isDragging;
     
 
     // Use this for initialization
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 
         canSprint = true;
         isSprinting = false;
+        isDragging = false;
 
 
 
@@ -51,7 +55,7 @@ public class PlayerController : MonoBehaviour {
         mousePos.y = Input.mousePosition.y; 
         lookPos = Camera.main.ScreenToWorldPoint(mousePos);
         lookPos = lookPos - transform.position;
-        lookAngle = Mathf.Atan2(lookPos.y, lookPos.x) * Mathf.Rad2Deg;
+        lookAngle = (Mathf.Atan2(lookPos.y, lookPos.x) + 30.0f) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(lookAngle, Vector3.forward);
 
         controller.Move(movement * Time.deltaTime);
@@ -95,6 +99,26 @@ public class PlayerController : MonoBehaviour {
         //Movement logic
         movement = new Vector3(-Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
         movement = movement * speed;
+    }
+
+
+    void HandleDragging(GameObject dragObject)
+    {
+        if(Input.GetKeyDown(KeyCode.E)) {
+            isDragging = !isDragging;
+        }
+
+
+        if(isDragging)  {
+            dragObject.transform.position = transform.position;
+        }
+
+    }
+
+    void OnTriggerStay(Collider col) {
+        if (col.gameObject.tag == "dragable") { 
+            HandleDragging(col.gameObject);
+        }
     }
 
 
