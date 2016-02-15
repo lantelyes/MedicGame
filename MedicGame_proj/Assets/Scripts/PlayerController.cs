@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour {
     bool canDrag;
 
     GameObject currentDragObject;
+    public List<InjuredSoldier> injuredSoldiers;
+
     
 
     // Use this for initialization
@@ -46,7 +49,7 @@ public class PlayerController : MonoBehaviour {
         isDragging = false;
 
 
-
+        injuredSoldiers = new List<InjuredSoldier>();
 
     }
 	
@@ -63,6 +66,11 @@ public class PlayerController : MonoBehaviour {
         transform.rotation = Quaternion.AngleAxis(lookAngle, Vector3.forward);
 
         controller.Move(movement * Time.deltaTime);
+        
+        foreach(InjuredSoldier soldier in injuredSoldiers) {
+            soldier.lineRenderer.SetPosition(1, gameObject.transform.position);
+        }
+
 	
 	}
 
@@ -105,6 +113,11 @@ public class PlayerController : MonoBehaviour {
         movement = movement * speed;
     }
 
+   public void StopDragging() {
+        currentDragObject = null;
+        isDragging = false;
+    }
+
 
     void HandleDragging(GameObject dragObject)
     {
@@ -127,7 +140,7 @@ public class PlayerController : MonoBehaviour {
 
 
     void OnTriggerStay(Collider col) {
-        if (col.gameObject.tag == "dragable") { 
+        if (col.gameObject.tag == "InjuredSoldier") { 
             HandleDragging(col.gameObject);
         }
     }
