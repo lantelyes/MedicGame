@@ -6,16 +6,18 @@ public class InjuredSoldier : MonoBehaviour {
     public PlayerController playerController;
     public GameObject healthBarObject;
     public LineRenderer lineRenderer;
+    public GameManager gameManager;
 
     Renderer healthBarRenderer;
 
     public bool isStableized;
     public float health = 100.0f;
-    float healthDecreaseSpeed = 5.0f;
+    float healthDecreaseSpeed = 15.0f;
 
 
     void Die()  {
         playerController.injuredSoldiers.Remove(this);
+        gameManager.numberDied++;
         Destroy(gameObject);
     }
 
@@ -24,6 +26,7 @@ public class InjuredSoldier : MonoBehaviour {
         lineRenderer = GetComponent<LineRenderer>();
         healthBarRenderer = healthBarObject.GetComponent<Renderer>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         isStableized = false;
 
     }
@@ -38,6 +41,7 @@ public class InjuredSoldier : MonoBehaviour {
 	void Update () {
 
         lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetWidth((health / 100.0f) / 10.0f, (health / 100.0f) / 10.0f);
 
 
         if (!isStableized) {

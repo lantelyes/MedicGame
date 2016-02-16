@@ -24,6 +24,8 @@ public class DraggableObject : MonoBehaviour {
     public bool GetDragged() {
         return isDragged;
     }
+
+
     
     
 

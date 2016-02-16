@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
     //Public stuff
     public float walkSpeed = 10.0f;
     public float sprintSpeed = 7.0f;
+    public List<InjuredSoldier> injuredSoldiers;
+    public TextMesh statusTextMesh;
 
 
     //Stuff about movement
@@ -35,9 +37,22 @@ public class PlayerController : MonoBehaviour {
     GameObject healthBarObject;
     Renderer[] medkitRenderers = new Renderer[3];
     GameObject currentDragObject;
-    public List<InjuredSoldier> injuredSoldiers;
 
 
+
+    public void Damage(float damage) {
+        health -= damage;
+
+        if (health <= 0.0f) {
+            Die();
+        }
+
+    }
+
+    void Die() {
+        //TODO
+        //Die
+    }
 
     // Use this for initialization
     void Start() {
@@ -86,7 +101,7 @@ public class PlayerController : MonoBehaviour {
             soldier.lineRenderer.SetPosition(1, gameObject.transform.position);
         }
 
-        healthBarObject.transform.localScale = new Vector3(.1f,health / 100.0f,.2f);
+        healthBarObject.transform.localScale = new Vector3(.2f,health / 100.0f,.2f);
          
         
 	
