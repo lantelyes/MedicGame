@@ -28,13 +28,27 @@ public class PlayerController : MonoBehaviour {
     bool isDragging;
     bool canDrag;
 
+    //Player stats
+    float health = 100.0f;
+    int numMedkits = 3;
+
+    GameObject healthBarObject;
+    Renderer[] medkitRenderers = new Renderer[3];
     GameObject currentDragObject;
     public List<InjuredSoldier> injuredSoldiers;
 
-    
+
 
     // Use this for initialization
-    void Start () {
+    void Start() {
+
+        for (int i = 0; i < numMedkits; i++) {
+            medkitRenderers[i] = transform.GetChild(i).GetComponent<Renderer>();
+        }
+        RenderMedkits();
+
+        healthBarObject = transform.GetChild(3).gameObject;
+
 
         speed = walkSpeed;
 
@@ -52,6 +66,7 @@ public class PlayerController : MonoBehaviour {
         injuredSoldiers = new List<InjuredSoldier>();
 
     }
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -71,6 +86,9 @@ public class PlayerController : MonoBehaviour {
             soldier.lineRenderer.SetPosition(1, gameObject.transform.position);
         }
 
+        healthBarObject.transform.localScale = new Vector3(.1f,health / 100.0f,.2f);
+         
+        
 	
 	}
 
@@ -118,8 +136,18 @@ public class PlayerController : MonoBehaviour {
         isDragging = false;
     }
 
+    void RenderMedkits() {
+        foreach(Renderer medkitRenderer in medkitRenderers) {
+            medkitRenderer.enabled = false;
+        }
 
-    void HandleDragging(GameObject dragObject)
+        for (int i = 0; i < numMedkits; i++) {
+            medkitRenderers[i].enabled = true;
+        }
+    }
+
+    
+    void HandleInput(GameObject dragObject)
     {
         if(Input.GetKeyDown(KeyCode.E)) {
             if(!isDragging) {
@@ -128,6 +156,15 @@ public class PlayerController : MonoBehaviour {
             } else {
                 currentDragObject = null;
                 isDragging = false;
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q)) {
+            InjuredSoldier soldier = dragObject.GetComponent<InjuredSoldier>();
+            if(!soldier.isStableized && numMedkits > 0) {
+                soldier.Stableize();
+                numMedkits--;
+                RenderMedkits();
             }
         }
 
@@ -141,7 +178,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerStay(Collider col) {
         if (col.gameObject.tag == "InjuredSoldier") { 
-            HandleDragging(col.gameObject);
+            HandleInput(col.gameObject);
         }
     }
 
