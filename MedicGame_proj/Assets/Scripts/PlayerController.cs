@@ -17,10 +17,9 @@ public class PlayerController : MonoBehaviour {
     float speed;
     float sprintTime = 5.0f;
     float sprintCharge = 5.0f;
+
     CharacterController controller;
-    Quaternion heading;
     Vector3 movement;
-    Vector3 mousePos;
     Vector3 lookPos;
 
     bool canSprint;
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour {
 
     //Draging stuff
     bool isDragging;
-    bool canDrag;
 
     //Player stats
     float health = 100.0f;
@@ -43,15 +41,12 @@ public class PlayerController : MonoBehaviour {
     public void Damage(float damage) {
         health -= damage;
 
-        if (health <= 0.0f) {
-            Die();
-        }
+        Die();
 
     }
 
     void Die() {
-        //TODO
-        //Die
+        Application.LoadLevel("End");
     }
 
     // Use this for initialization
@@ -67,14 +62,12 @@ public class PlayerController : MonoBehaviour {
 
         speed = walkSpeed;
 
-        mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
         controller = GetComponent<CharacterController>();
         movement = new Vector3(0.0f,0.0f,0.0f);
 
         canSprint = true;
         isSprinting = false;
 
-        canDrag = true;
         isDragging = false;
 
 
@@ -88,10 +81,7 @@ public class PlayerController : MonoBehaviour {
 
         HandleMovement();
 
-        mousePos.x = Input.mousePosition.x;
-        mousePos.y = Input.mousePosition.y; 
-        lookPos = Camera.main.ScreenToWorldPoint(mousePos);
-        lookPos = lookPos - transform.position;
+        lookPos = movement + transform.position;
         lookAngle = (Mathf.Atan2(lookPos.y, lookPos.x) + 30.0f) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(lookAngle, Vector3.forward);
 

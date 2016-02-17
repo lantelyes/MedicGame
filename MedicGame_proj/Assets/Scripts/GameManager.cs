@@ -11,9 +11,11 @@ public class GameManager : MonoBehaviour {
     public int numberDied;
     public float injuredSoldierSpawnRate;
     public float injuredSoldierSpawnRadius;
+    public float injuredSoldierSpawnAccel;
 
     public float artySpawnRadius;
     public float artySpawnRate;
+    public float artySpawnAccel;
 
     public InjuredSoldier injuredSoldier;
     public PlayerController playerController;
@@ -23,6 +25,8 @@ public class GameManager : MonoBehaviour {
 
     Vector2 positionToSpawnSoldier;
     Vector2 positionToSpawnArty;
+
+   
 	// Use this for initialization
 	void Start () {
 
@@ -35,6 +39,25 @@ public class GameManager : MonoBehaviour {
         positionToSpawnArty = Random.insideUnitCircle* injuredSoldierSpawnRadius;
         StartCoroutine("SpawnArty");
 
+        StartCoroutine("AccelerateSpawnRates");
+
+    }
+
+    IEnumerator AccelerateSpawnRates() {
+        while(isPlaying) {
+
+            if(injuredSoldierSpawnRate > 1) {
+                injuredSoldierSpawnRate -= injuredSoldierSpawnAccel;
+            }
+
+            if(artySpawnRate > 1) {
+                artySpawnRate -= artySpawnAccel;
+            }
+
+
+
+            yield return new WaitForSeconds(8.0f);
+        }
     }
 
     IEnumerator SpawnInjuredSoldier() {

@@ -15,7 +15,7 @@ public class InjuredSoldier : MonoBehaviour {
     float healthDecreaseSpeed = 15.0f;
 
 
-    void Die()  {
+    public void Die()  {
         playerController.injuredSoldiers.Remove(this);
         gameManager.numberDied++;
         Destroy(gameObject);

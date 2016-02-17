@@ -5,6 +5,7 @@ public class Arty : MonoBehaviour {
 
     public PlayerController playerController;
     public GameObject explosionObject;
+    InjuredSoldier soldier;
 
     public float damageAmount = 50.0f;
     public float explodeDelay = 5.0f;
@@ -13,6 +14,7 @@ public class Arty : MonoBehaviour {
 
     float dropTime = 0.0f;
     bool isPlayerInRadius = false;
+    bool isSoldierInRadius = false;
 
 	// Use this for initialization
 	void Start () {
@@ -28,6 +30,11 @@ public class Arty : MonoBehaviour {
 
         if (isPlayerInRadius) {
             playerController.Damage(damageAmount);
+        }
+
+        if(isSoldierInRadius && soldier) {
+            soldier.Die();
+
         }
 
         Destroy(gameObject);
@@ -53,10 +60,18 @@ public class Arty : MonoBehaviour {
         if (col.gameObject.tag == "Player") {
             isPlayerInRadius = true;
         }
+        if (col.gameObject.tag == "InjuredSoldier") {
+            isSoldierInRadius = true;
+            soldier = col.gameObject.GetComponent<InjuredSoldier>();
+        }
     }
     void OnTriggerExit(Collider col) {
         if (col.gameObject.tag == "Player") {
             isPlayerInRadius = false;
+        }
+        if (col.gameObject.tag == "InjuredSoldier") {
+            isSoldierInRadius = false;
+            soldier = null;
         }
     }
 }

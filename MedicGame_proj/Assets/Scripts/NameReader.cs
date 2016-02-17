@@ -4,6 +4,7 @@ using System.Collections;
 public class NameReader : MonoBehaviour {
 
     public TextAsset nameList;
+    public float scrollSpeed;
 
     TextMesh textMesh;
 
@@ -19,7 +20,7 @@ public class NameReader : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.position -= new Vector3(0.0f, 0.0f, 10.0f) * Time.deltaTime;
+        transform.position -= new Vector3(0.0f, 0.0f, scrollSpeed) * Time.deltaTime;
 	
 	}
 }
