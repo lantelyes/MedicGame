@@ -41,6 +41,7 @@ public class InjuredSoldier : MonoBehaviour {
 	void Update () {
 
         lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, playerController.gameObject.transform.position);
         lineRenderer.SetWidth((health / 100.0f) / 10.0f, (health / 100.0f) / 10.0f);
 
 

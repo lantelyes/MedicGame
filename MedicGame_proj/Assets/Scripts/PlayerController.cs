@@ -87,9 +87,6 @@ public class PlayerController : MonoBehaviour {
 
         controller.Move(movement * Time.deltaTime);
         
-        foreach(InjuredSoldier soldier in injuredSoldiers) {
-            soldier.lineRenderer.SetPosition(1, gameObject.transform.position);
-        }
 
         healthBarObject.transform.localScale = new Vector3(.2f,health / 100.0f,.2f);
          

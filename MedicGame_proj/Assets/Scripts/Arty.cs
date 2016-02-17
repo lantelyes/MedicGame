@@ -5,6 +5,8 @@ public class Arty : MonoBehaviour {
 
     public PlayerController playerController;
     public GameObject explosionObject;
+    public GameObject craterObject;
+
     InjuredSoldier soldier;
 
     public float damageAmount = 50.0f;
@@ -27,6 +29,7 @@ public class Arty : MonoBehaviour {
     void Explode() {
 
         Instantiate(explosionObject, transform.position, Quaternion.identity);
+        Instantiate(craterObject, transform.position, Quaternion.identity);
 
         if (isPlayerInRadius) {
             playerController.Damage(damageAmount);
